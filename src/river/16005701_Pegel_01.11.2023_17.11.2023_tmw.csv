@@ -1,0 +1,28 @@
+﻿Quelle:;"Bayerisches Landesamt für Umwelt, www.gkd.bayern.de"
+Datenbankabfrage:;"18.11.2023 18:25"
+Zeitbezug:;MEZ
+Messstellen-Name:;München
+Messstellen-Nr.:;16005701
+Gewässer:;Isar
+Ostwert:;693161;Nordwert:;5335716;"ETRS89 / UTM Zone 32N"
+Pegelnullpunktshöhe:;"500,33 m NHN (DHHN2016)"
+
+"Tageswerte Wasserstand [cm]"
+Datum;Mittelwert;Maximum;Minimum;Prüfstatus
+2023-11-01;87,00;91,00;83,00;Rohdaten
+2023-11-02;83,00;88,00;79,00;Rohdaten
+2023-11-03;95,00;101,00;86,00;Rohdaten
+2023-11-04;99,00;105,00;89,00;Rohdaten
+2023-11-05;88,00;94,00;84,00;Rohdaten
+2023-11-06;83,00;90,00;79,00;Rohdaten
+2023-11-07;83,00;88,00;80,00;Rohdaten
+2023-11-08;88,00;92,00;80,00;Rohdaten
+2023-11-09;89,00;94,00;83,00;Rohdaten
+2023-11-10;87,00;92,00;83,00;Rohdaten
+2023-11-11;84,00;89,00;79,00;Rohdaten
+2023-11-12;80,00;82,00;77,00;Rohdaten
+2023-11-13;102,00;115,00;80,00;Rohdaten
+2023-11-14;142,00;189,00;110,00;Rohdaten
+2023-11-15;182,00;190,00;171,00;Rohdaten
+2023-11-16;155,00;171,00;138,00;Rohdaten
+2023-11-17;156,00;182,00;138,00;Rohdaten

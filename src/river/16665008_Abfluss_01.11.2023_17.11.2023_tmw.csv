@@ -1,0 +1,28 @@
+﻿Quelle:;"Bayerisches Landesamt für Umwelt, www.gkd.bayern.de"
+Datenbankabfrage:;"18.11.2023 18:31"
+Zeitbezug:;MEZ
+Messstellen-Name:;Leutstetten
+Messstellen-Nr.:;16665008
+Gewässer:;Würm
+Ostwert:;676176;Nordwert:;5322245;"ETRS89 / UTM Zone 32N"
+Pegelnullpunktshöhe:;"582,53 m NHN (DHHN2016)"
+
+"Tageswerte Abfluss [m³/s]"
+Datum;Mittelwert;Maximum;Minimum;Prüfstatus
+2023-11-01;3,53;3,59;3,5;Rohdaten
+2023-11-02;3,54;3,99;3,41;Rohdaten
+2023-11-03;3,81;3,99;3,79;Rohdaten
+2023-11-04;3,7;3,79;3,69;Rohdaten
+2023-11-05;3,74;3,79;3,59;Rohdaten
+2023-11-06;3,61;3,79;3,59;Rohdaten
+2023-11-07;3,57;3,59;3,5;Rohdaten
+2023-11-08;3,52;3,59;3,5;Rohdaten
+2023-11-09;3,44;3,5;3,41;Rohdaten
+2023-11-10;3,41;3,5;3,31;Rohdaten
+2023-11-11;3,43;3,5;3,41;Rohdaten
+2023-11-12;3,37;3,79;3,23;Rohdaten
+2023-11-13;4,08;4,19;3,79;Rohdaten
+2023-11-14;4,63;5,38;4,08;Rohdaten
+2023-11-15;5,18;5,5;4,93;Rohdaten
+2023-11-16;4,71;5,05;4,5;Rohdaten
+2023-11-17;5,41;5,5;5,05;Rohdaten

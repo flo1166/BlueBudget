@@ -12,6 +12,20 @@ import pandas as pd
 os.chdir('C:/Eigene Dateien/HackaTumProjekt')
 
 def reader_groundwater(directory):
+    '''
+    This reader adds all groundwater files togheter
+
+    Parameters
+    ----------
+    directory : string
+        Where to search for the groundwater files.
+
+    Returns
+    -------
+    df : pd.DataFrame()
+        with all groundwater data.
+
+    '''
     df_names = os.listdir(directory)
     df_names = list(filter(re.compile(r"16*").match, df_names))
     df = pd.DataFrame()

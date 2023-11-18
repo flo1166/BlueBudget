@@ -16,6 +16,22 @@ df_municipalities = gpd.read_file('src/cityborders/municipalities.json')
 mapping_groundwater = pd.read_csv('src/mapping/groundwater_mapping.csv', sep = ';')
 
 def map_groundwater_to_municipalities(df_municipalities, mapping_groundwater):
+    '''
+    This function maps measure points for ground water to municipalities
+
+    Parameters
+    ----------
+    df_municipalities : pd.DataFrame()
+        DF with municipalities (and geo shapes).
+    mapping_groundwater : pd.DataFrame()
+        DF with mapping.
+
+    Returns
+    -------
+    mapping_groundwater : pd.DataFrame()
+        DF with mapping.
+
+    '''
     for l, i in enumerate(df_municipalities['geometry']):
         for j in range(len(mapping_groundwater['east'])):
             if i.contains(Point(mapping_groundwater.loc[j, 'east'], mapping_groundwater.loc[j, 'north'])):
