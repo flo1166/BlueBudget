@@ -1,0 +1,34 @@
+name: bluebudget
+channels:
+  - defaults
+dependencies:
+  - asttokens=2.0.5=pyhd3eb1b0_0
+  - backcall=0.2.0=pyhd3eb1b0_0
+  - ca-certificates=2023.08.22=haa95532_0
+  - colorama=0.4.6=py39haa95532_0
+  - decorator=5.1.1=pyhd3eb1b0_0
+  - exceptiongroup=1.0.4=py39haa95532_0
+  - executing=0.8.3=pyhd3eb1b0_0
+  - ipython=8.15.0=py39haa95532_0
+  - jedi=0.18.1=py39haa95532_1
+  - matplotlib-inline=0.1.6=py39haa95532_0
+  - openssl=3.0.12=h2bbff1b_0
+  - parso=0.8.3=pyhd3eb1b0_0
+  - pickleshare=0.7.5=pyhd3eb1b0_1003
+  - pip=23.3=py39haa95532_0
+  - prompt-toolkit=3.0.36=py39haa95532_0
+  - pure_eval=0.2.2=pyhd3eb1b0_0
+  - pygments=2.15.1=py39haa95532_1
+  - python=3.9.18=h1aa4202_0
+  - setuptools=68.0.0=py39haa95532_0
+  - six=1.16.0=pyhd3eb1b0_1
+  - sqlite=3.41.2=h2bbff1b_0
+  - stack_data=0.2.0=pyhd3eb1b0_0
+  - traitlets=5.7.1=py39haa95532_0
+  - typing_extensions=4.7.1=py39haa95532_0
+  - tzdata=2023c=h04d1e81_0
+  - vc=14.2=h21ff451_1
+  - vs2015_runtime=14.27.29016=h5e58377_2
+  - wcwidth=0.2.5=pyhd3eb1b0_0
+  - wheel=0.41.2=py39haa95532_0
+prefix: C:\Anaconda\anaconda3\envs\bluebudget
