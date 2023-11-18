@@ -8,7 +8,8 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #add8e6; /* Light blue */
+            background-color: #add8e6;
+            /* Light blue */
             text-align: center;
             padding: 50px;
         }
@@ -25,7 +26,8 @@
         #waterLevel {
             width: 100%;
             height: 100%;
-            background-color: rgba(255, 204, 0, 0.7); /* Yellow, semi-transparent */
+            background-color: rgba(255, 204, 0, 0.7);
+            /* Yellow, semi-transparent */
             position: absolute;
             bottom: 0;
             z-index: 0;
@@ -46,16 +48,20 @@
         .marking {
             display: none;
             position: absolute;
-            left: 35px; /* Adjust this value as needed */
+            left: 35px;
+            /* Adjust this value as needed */
             right: 0;
             border-top: 5px dashed #000;
             text-align: center;
             text-decoration: solid;
             text-emphasis-color: black;
             z-index: 1;
-            color: #fff; /* White color for better visibility */
-            font-size: 18px; /* Larger text size */
-            text-shadow: 2px 2px 4px #000; /* Black shadow for depth */
+            color: #fff;
+            /* White color for better visibility */
+            font-size: 18px;
+            /* Larger text size */
+            text-shadow: 2px 2px 4px #000;
+            /* Black shadow for depth */
         }
 
         .button {
@@ -71,14 +77,93 @@
         }
 
         @keyframes blink {
-            0% { background-color: #add8e6; }
-            50% { background-color: red; }
-            100% { background-color: #add8e6; }
+            0% {
+                background-color: #add8e6;
+            }
+
+            50% {
+                background-color: red;
+            }
+
+            100% {
+                background-color: #add8e6;
+            }
         }
 
         .blinking {
             animation: blink 1s linear infinite;
         }
+
+        #weatherForecast {
+    margin-top: 20px;
+}
+
+.forecast-item {
+    display: flex;
+    align-items: center;
+    background-color: #e6f7ff;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.calendar {
+    width: 60px;
+    height: 60px;
+    background-color: #add8e6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-right: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.calendar-date {
+    font-size: 22px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.calendar-month {
+    font-size: 16px;
+    color: #fff;
+}
+
+.weather-data {
+    flex-grow: 1;
+}
+
+#groundwaterTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#groundwaterTable, #groundwaterTable th, #groundwaterTable td {
+    border: 1px solid #ddd;
+}
+
+#groundwaterTable th, #groundwaterTable td {
+    text-align: left;
+    padding: 8px;
+}
+
+#groundwaterTable th {
+    background-color: #add8e6;
+    color: white;
+}
+
+#groundwaterTable tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#groundwaterTable tr:hover {
+    background-color: #ddd;
+}
+
 
     </style>
 </head>
@@ -113,7 +198,21 @@
         <h2>Groundwater Level</h2>
         <p id="groundwaterStatus">Loading...</p>
     </div>
-
+    <div id="groundwaterLevelTable" style="display: none;">
+        <h2>Groundwater Levels</h2>
+        <table id="groundwaterTable">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Level (m)</th>
+                    <th>Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data rows will be inserted here -->
+            </tbody>
+        </table>
+    </div>
     <!-- Weather Forecast Section -->
     <div id="weatherForecast" style="display: none;"></div>
 
@@ -127,12 +226,14 @@
                 document.querySelectorAll('.button').forEach(btn => btn.style.display = 'block');
                 document.querySelectorAll('.marking').forEach(mark => mark.style.display = 'block');
                 document.getElementById('error').style.display = 'none';
+                document.getElementById('groundwaterLevelTable').style.display = 'block'; // Add this line
                 fetchGroundwaterLevel();
                 fetchWeatherForecast();
             } else {
                 document.getElementById('error').style.display = 'block';
                 document.getElementById('groundwaterLevel').style.display = 'none';
                 document.getElementById('weatherForecast').style.display = 'none';
+                document.getElementById('groundwaterLevelTable').style.display = 'none'; // Add this line
             }
         }
 
@@ -142,21 +243,21 @@
         }
 
         function toggleWater(activity, amount) {
-    var waterLevel = document.getElementById('waterLevel');
-    var currentHeight = parseFloat(waterLevel.style.height.replace('%', ''));
+            var waterLevel = document.getElementById('waterLevel');
+            var currentHeight = parseFloat(waterLevel.style.height.replace('%', ''));
 
-    if (activity === 'shower' || activity === 'washing' || activity === 'blumen') {
-        var newHeight = Math.max(currentHeight - amount, 0);
-        waterLevel.style.height = newHeight + '%';
+            if (activity === 'shower' || activity === 'washing' || activity === 'blumen') {
+                var newHeight = Math.max(currentHeight - amount, 0);
+                waterLevel.style.height = newHeight + '%';
 
-        // Check if the glass is empty and apply blinking effect
-        if (newHeight <= 0) {
-            document.body.classList.add('blinking');
-        } else {
-            document.body.classList.remove('blinking');
+                // Check if the glass is empty and apply blinking effect
+                if (newHeight <= 0) {
+                    document.body.classList.add('blinking');
+                } else {
+                    document.body.classList.remove('blinking');
+                }
+            }
         }
-    }
-}
         function fetchGroundwaterLevel() {
             // Placeholder for fetching groundwater level
             document.getElementById('groundwaterStatus').innerText = 'Normal';
@@ -176,18 +277,59 @@
         }
 
         function displayWeatherForecast(data) {
-            const forecastDiv = document.getElementById('weatherForecast');
-            forecastDiv.innerHTML = '<h2>Weather Forecast</h2>';
-            data.daily.time.forEach((day, index) => {
-                forecastDiv.innerHTML += `<p>${day}: Max Temp: ${data.daily.temperature_2m_max[index]}°C, Min Temp: ${data.daily.temperature_2m_min[index]}°C, Precipitation: ${data.daily.precipitation_sum[index]}mm</p>`;
-            });
-        }
+    const forecastDiv = document.getElementById('weatherForecast');
+    forecastDiv.innerHTML = '<h2>Weather Forecast</h2>';
+    data.daily.time.forEach((day, index) => {
+        const date = new Date(day);
+        const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+        forecastDiv.innerHTML += `
+            <div class="forecast-item">
+                <div class="calendar">
+                    <div class="calendar-date">${date.getDate()}</div>
+                    <div class="calendar-month">${date.toLocaleString('default', { month: 'short' })}</div>
+                </div>
+                <div class="weather-data">
+                    <strong>${formattedDate}</strong>: 
+                    Max Temp: ${data.daily.temperature_2m_max[index]}°C, 
+                    Min Temp: ${data.daily.temperature_2m_min[index]}°C, 
+                    Precipitation: ${data.daily.precipitation_sum[index]}mm
+                </div>
+            </div>`;
+    });
+}
 
-        document.addEventListener('DOMContentLoaded', () => {
-            fetchGroundwaterLevel();
-            fetchWeatherForecast();
-            document.getElementById('waterLevel').style.height = '85%';
-        });
+const groundwaterData = [
+    { date: '2023-11-15', level: '4.5', type: 'Past' },
+    { date: '2023-11-16', level: '4.6', type: 'Past' },
+    { date: '2023-11-17', level: '4.6', type: 'Past' },
+    { date: '2023-11-18', level: '4.6', type: 'Past' },
+    { date: '2023-11-19', level: '4.7', type: 'Predicted' },
+];
+
+function updateGroundwaterTable(data) {
+    const tableBody = document.getElementById('groundwaterTable').getElementsByTagName('tbody')[0];
+    tableBody.innerHTML = ''; // Clear existing data
+
+    data.forEach(item => {
+        const row = tableBody.insertRow();
+        const dateCell = row.insertCell(0);
+        const levelCell = row.insertCell(1);
+        const typeCell = row.insertCell(2);
+
+        dateCell.textContent = item.date;
+        levelCell.textContent = item.level;
+        typeCell.textContent = item.type; // 'Past' or 'Predicted'
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    fetchGroundwaterLevel();
+    fetchWeatherForecast();
+    document.getElementById('waterLevel').style.height = '85%';
+    updateGroundwaterTable(groundwaterData); // Add this line
+});
+
     </script>
 </body>
 
