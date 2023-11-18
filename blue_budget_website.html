@@ -164,6 +164,10 @@
     background-color: #ddd;
 }
 
+.button-clicked {
+    background-color: #4CAF50; /* Green background */
+    color: white;
+}
 
     </style>
 </head>
@@ -183,16 +187,19 @@
         <div class="marking" style="top: 60%;">2L</div>
         <div class="marking" style="top: 80%;">1L</div>
     </div>
-    <button class="button" id="showerButton" onclick="showShowerOptions()">🚿 Shower</button>
-    <button class="button" id="washingButton" onclick="toggleWater('washing', 15)">🧼 Washing Machine</button>
-    <button class="button" id="blumenButton" onclick="toggleWater('blumen', 10)">🌻 Blumen gießen</button>
+    <button class="button" id="showerButton" onclick="toggleWater('shower', 15); showShowerOptions()">🚿 Shower (0)</button>
 
-    <div class="shower-options" id="showerOptions" style="display: none;">
+    <div class="shower-options" id="showerOptions" style="display: none; margin-left: 20px;">
         <button onclick="toggleWater('shower', 5)">Short Shower</button>
         <button onclick="toggleWater('shower', 10)">Medium Shower</button>
         <button onclick="toggleWater('shower', 15)">Long Shower</button>
     </div>
+    <button class="button" id="washingButton" onclick="toggleWater('washing', 15)">🧼 Washing Machine (0)</button>
+    <button class="button" id="blumenButton" onclick="toggleWater('blumen', 10)">🌻 Blumen gießen (0)</button>
+    
 
+   
+    <button class="button" id="resetButton" onclick="resetCounters()">🔄 Reset</button>
     <!-- Groundwater Level Section -->
     <div id="groundwaterLevel" style="display: none;">
         <h2>Groundwater Level</h2>
@@ -217,6 +224,14 @@
     <div id="weatherForecast" style="display: none;"></div>
 
     <script>
+        let showerCount = 0;
+        let washingCount = 0;
+        let blumenCount = 0;
+        function showShowerOptions() {
+            var showerOptions = document.getElementById('showerOptions');
+            showerOptions.style.display = showerOptions.style.display === 'none' ? 'block' : 'none';
+        }
+
         function showWaterBudget() {
             var postalCode = document.getElementById('postalCode').value;
             if (postalCode.length === 5) {
@@ -237,27 +252,41 @@
             }
         }
 
-        function showShowerOptions() {
-            var showerOptions = document.getElementById('showerOptions');
-            showerOptions.style.display = showerOptions.style.display === 'none' ? 'block' : 'none';
-        }
+        
+
 
         function toggleWater(activity, amount) {
-            var waterLevel = document.getElementById('waterLevel');
-            var currentHeight = parseFloat(waterLevel.style.height.replace('%', ''));
+    var waterLevel = document.getElementById('waterLevel');
+    var currentHeight = parseFloat(waterLevel.style.height.replace('%', ''));
 
-            if (activity === 'shower' || activity === 'washing' || activity === 'blumen') {
-                var newHeight = Math.max(currentHeight - amount, 0);
-                waterLevel.style.height = newHeight + '%';
+    if (activity === 'shower' || activity === 'washing' || activity === 'blumen') {
+        var newHeight = Math.max(currentHeight - amount, 0);
+        waterLevel.style.height = newHeight + '%';
 
-                // Check if the glass is empty and apply blinking effect
-                if (newHeight <= 0) {
-                    document.body.classList.add('blinking');
-                } else {
-                    document.body.classList.remove('blinking');
-                }
-            }
+        // Increment the counter and update the button text
+        var buttonId = activity + 'Button'; // Construct the button ID
+        var button = document.getElementById(buttonId);
+        var currentCount = parseInt(button.textContent.match(/\d+/)[0]); // Extract the number from the button text
+        currentCount++; // Increment the count
+        button.innerHTML = button.textContent.replace(/\d+/, currentCount); // Update the button text with the new count
+
+        // Check if the glass is empty and apply blinking effect
+        if (newHeight <= 0) {
+            document.body.classList.add('blinking');
+        } else {
+            document.body.classList.remove('blinking');
         }
+    }
+}
+function resetWater() {
+    document.getElementById('waterLevel').style.height = '85%';
+    document.body.classList.remove('blinking');
+    showerCount = washingCount = blumenCount = 0;
+    document.getElementById('showerCount').innerText = showerCount;
+    document.getElementById('washingCount').innerText = washingCount;
+    document.getElementById('blumenCount').innerText = blumenCount;
+}
+
         function fetchGroundwaterLevel() {
             // Placeholder for fetching groundwater level
             document.getElementById('groundwaterStatus').innerText = 'Normal';
@@ -329,6 +358,25 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('waterLevel').style.height = '85%';
     updateGroundwaterTable(groundwaterData); // Add this line
 });
+
+function resetCounters() {
+    // Reset the water level
+    var waterLevel = document.getElementById('waterLevel');
+    waterLevel.style.height = '85%'; // Reset to initial height
+
+    // Reset counters for each button
+    resetButtonCounter('showerButton', '🚿 Shower');
+    resetButtonCounter('washingButton', '🧼 Washing Machine');
+    resetButtonCounter('blumenButton', '🌻 Blumen gießen');
+
+    // Remove blinking effect if any
+    document.body.classList.remove('blinking');
+}
+
+function resetButtonCounter(buttonId, initialText) {
+    var button = document.getElementById(buttonId);
+    button.innerHTML = initialText + ' (0)';
+}
 
     </script>
 </body>
