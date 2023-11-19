@@ -40,3 +40,8 @@ def map_groundwater_to_municipalities(df_municipalities, mapping_groundwater):
     return mapping_groundwater
 
 mapping_groundwater = map_groundwater_to_municipalities(df_municipalities, mapping_groundwater)
+
+municipalities_missing = df_municipalities[~df_municipalities['name'].isin(mapping_groundwater['municipality'])]['name']
+
+municipalities_groundwater = df_municipalities.merge(mapping_groundwater[['municipality', 'groundwater_ID']], left_on = 'name', right_on = 'municipality', how = 'left')
+
