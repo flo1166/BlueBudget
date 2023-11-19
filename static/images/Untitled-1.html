@@ -1,8 +1,9 @@
-<!DOCTYPE html>
+please delete all that is not needed in this code and please switch from the ground water table to a bar plot: <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Water Budget App</title>
     <style>
@@ -32,7 +33,7 @@
             bottom: 0;
             z-index: 0;
             /* Optional: Add a bubbly background image */
-            background-image: url('beer2.gif');
+            background-image: url("{{ url_for('static', filename='images/beer2.gif') }}");
             background-size: cover;
         }
 
@@ -168,12 +169,34 @@
     background-color: #4CAF50; /* Green background */
     color: white;
 }
+.dashboard-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 20px;
+        }
+
+        .water-budget-container {
+            flex-basis: 300px;
+            text-align: center;
+        }
+
+        .chart-container,
+        .weather-container {
+            flex-grow: 1;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
     </style>
 </head>
 
 <body>
     <h1>Water Budget App</h1>
+    <div class="dashboard-container">
+        <div class="water-budget-container">
     <div id="searchSection">
         <input type="number" id="postalCode" placeholder="Enter Postal Code" min="10000" max="99999">
         <button onclick="showWaterBudget()">Search</button>
@@ -181,13 +204,13 @@
     </div>
     <div id="waterBudget">
         <div id="waterLevel"></div>
-        <img id="masskrugImage" src="Bierkrug.png" alt="Maßkrug">
+        <img id="masskrugImage" src="{{ url_for('static', filename='images/Bierkrug.png') }}" alt="Maßkrug">  
         <div class="marking" style="top: 20%;">4L</div>
         <div class="marking" style="top: 40%;">3L</div>
         <div class="marking" style="top: 60%;">2L</div>
         <div class="marking" style="top: 80%;">1L</div>
     </div>
-    <button class="button" id="showerButton" onclick="toggleWater('shower', 15); showShowerOptions()">🚿 Shower (0)</button>
+    <button class="button" id="showerButton" onclick="toggleWater('shower', 0); showShowerOptions()">🚿 Shower </button>
 
     <div class="shower-options" id="showerOptions" style="display: none; margin-left: 20px;">
         <button onclick="toggleWater('shower', 5)">Short Shower</button>
@@ -196,15 +219,34 @@
     </div>
     <button class="button" id="washingButton" onclick="toggleWater('washing', 15)">🧼 Washing Machine (0)</button>
     <button class="button" id="blumenButton" onclick="toggleWater('blumen', 10)">🌻 Blumen gießen (0)</button>
-    
+    <button class="button" id="dishwasherButton" onclick="toggleWater('dishwasher', 20)">🍽️ Dishwasher (0)</button>
+    <button class="button" id="toiletButton" onclick="toggleWater('toilet', 6)">🚽 Toilet (0)</button>
+
 
    
     <button class="button" id="resetButton" onclick="resetCounters()">🔄 Reset</button>
+
+</div>
+
+<div class="chart-container">
     <!-- Groundwater Level Section -->
     <div id="groundwaterLevel" style="display: none;">
         <h2>Groundwater Level</h2>
         <p id="groundwaterStatus">Loading...</p>
     </div>
+
+    <div id="groundwaterLevelChartContainer" style="display: none;"> 
+        <h2>Groundwater Levels</h2>
+        <canvas id="groundwaterChart"></canvas>
+    </div>
+
+
+    <div id="chartContainer">
+        <h2>Groundwater Levels</h2>
+        <canvas id="groundwaterChart"></canvas>
+    </div>
+    
+
     <div id="groundwaterLevelTable" style="display: none;">
         <h2>Groundwater Levels</h2>
         <table id="groundwaterTable">
@@ -219,12 +261,12 @@
                 <!-- Data rows will be inserted here -->
             </tbody>
         </table>
-    </div>
+    </div></div>
+    <div class="weather-container">
     <!-- Weather Forecast Section -->
     <div id="weatherForecast" style="display: none;"></div>
-
+</div>
     <script>
-        let showerCount = 0;
         let washingCount = 0;
         let blumenCount = 0;
         function showShowerOptions() {
@@ -252,29 +294,54 @@
             }
         }
 
-        
+
+        function createGroundwaterChart(data) {
+    const ctx = document.getElementById('groundwaterChart').getContext('2d');
+    const chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: data.map(item => item.date),
+            datasets: [{
+                label: 'Groundwater Level (m)',
+                data: data.map(item => item.level),
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
 
 
         function toggleWater(activity, amount) {
     var waterLevel = document.getElementById('waterLevel');
     var currentHeight = parseFloat(waterLevel.style.height.replace('%', ''));
 
-    if (activity === 'shower' || activity === 'washing' || activity === 'blumen') {
+    if (activity === 'shower' || activity === 'washing' || activity === 'blumen' || activity === 'dishwasher' || activity === 'toilet') {
         var newHeight = Math.max(currentHeight - amount, 0);
         waterLevel.style.height = newHeight + '%';
-
-        // Increment the counter and update the button text
-        var buttonId = activity + 'Button'; // Construct the button ID
-        var button = document.getElementById(buttonId);
-        var currentCount = parseInt(button.textContent.match(/\d+/)[0]); // Extract the number from the button text
-        currentCount++; // Increment the count
-        button.innerHTML = button.textContent.replace(/\d+/, currentCount); // Update the button text with the new count
 
         // Check if the glass is empty and apply blinking effect
         if (newHeight <= 0) {
             document.body.classList.add('blinking');
         } else {
             document.body.classList.remove('blinking');
+        }
+
+        // Increment the counter and update the button text only if amount is greater than 0
+        if (amount > 0) {
+            var buttonId = activity + 'Button'; // Construct the button ID
+            var button = document.getElementById(buttonId);
+            var currentCount = parseInt(button.textContent.match(/\d+/)[0]); // Extract the number from the button text
+            currentCount++; // Increment the count
+            button.innerHTML = button.textContent.replace(/\d+/, currentCount); // Update the button text with the new count
         }
     }
 }
@@ -287,10 +354,19 @@ function resetWater() {
     document.getElementById('blumenCount').innerText = blumenCount;
 }
 
-        function fetchGroundwaterLevel() {
-            // Placeholder for fetching groundwater level
-            document.getElementById('groundwaterStatus').innerText = 'Normal';
+async function fetchGroundwaterLevel() {
+    try {
+        const response = await fetch('/get-groundwater-data');
+        if (!response.ok) {
+            throw new Error('Network response was not ok.');
         }
+        const data = await response.json();
+        updateGroundwaterTable(data);
+    } catch (error) {
+        console.error('There has been a problem with your fetch operation:', error);
+    }
+}
+
 
         async function fetchWeatherForecast() {
             try {
@@ -327,13 +403,7 @@ function resetWater() {
     });
 }
 
-const groundwaterData = [
-    { date: '2023-11-15', level: '4.5', type: 'Past' },
-    { date: '2023-11-16', level: '4.6', type: 'Past' },
-    { date: '2023-11-17', level: '4.6', type: 'Past' },
-    { date: '2023-11-18', level: '4.6', type: 'Past' },
-    { date: '2023-11-19', level: '4.7', type: 'Predicted' },
-];
+
 
 function updateGroundwaterTable(data) {
     const tableBody = document.getElementById('groundwaterTable').getElementsByTagName('tbody')[0];
@@ -377,6 +447,31 @@ function resetButtonCounter(buttonId, initialText) {
     var button = document.getElementById(buttonId);
     button.innerHTML = initialText + ' (0)';
 }
+
+function createGroundwaterChart(data) {
+    const ctx = document.getElementById('groundwaterChart').getContext('2d');
+    const chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: data.map(item => item.date),
+            datasets: [{
+                label: 'Groundwater Level (m)',
+                data: data.map(item => item.level),
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
 
     </script>
 </body>
